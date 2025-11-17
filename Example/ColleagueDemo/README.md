@@ -14,4 +14,4 @@
    - `Run Onboarding Pipeline`：执行业务流程并观察日志。
    - `Thinking distinctId` 日志来自 `BizFlowKitInitializer.thinkingDistinctId()`，无需直接引用第三方 SDK。
 
-> Podfile 通过 Git tag `0.1.1` 指向刚发布的版本，如后续有新版本只需更新 tag 或使用 `~> 最新版本`。
+> Podfile 通过 Git tag `0.1.2` 指向刚发布的版本，如后续有新版本只需更新 tag 或使用 `~> 最新版本`。

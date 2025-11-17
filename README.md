@@ -12,7 +12,7 @@ BizFlowKit 是一个示例 CocoaPods 组件工程，用于在公司内部沉淀�
 ## 给同事的集成指引
 
 ```ruby
-pod 'BizFlowKit', '~> 0.1.1'
+pod 'BizFlowKit', '~> 0.1.2'
 ```
 
 1. 在目标项目的 `Podfile` 中加入上述依赖，并执行 `pod install`。
@@ -157,7 +157,7 @@ BizFlowKit 默认不预置任何第三方 SDK，方便在不同业务场景下�
 
 ## 发布流程示例
 
-1. 推送源码到 Git 仓库并打 tag（例如 `0.1.1`）。
+1. 推送源码到 Git 仓库并打 tag（例如 `0.1.2`）。
 2. 将 `s.source` 中的地址与 tag 更新为实际值并提交。
 3. 执行 `pod spec lint` 确认无误。
 4. 根据公司流程，将 Podspec 推送到内部 Specs 仓库或官方 CocoaPods Trunk。
