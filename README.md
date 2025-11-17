@@ -121,12 +121,7 @@ BizFlowKit 默认不预置任何第三方 SDK，方便在不同业务场景下�
 
 ## 示例能力
 
-示例 App 演示了基于 `BizFlowPipeline` 的入门流程，并提供 `BizFlowKitInitializer` 对友盟 SDK 进行统一初始化。运行后：
-
-- 点击 `Initialize UMSDK` 完成友盟基础组件配置。
-- 点击 `Run Onboarding Pipeline` 查看流程节点执行情况与上下文日志。
-
-你可以在此基础上扩展更多节点，或接入自定义监控与埋点方案。
+示例 App 提供 `BizFlowKitInitializer` 对友盟 SDK、Adjust 等进行统一初始化，并展示如何获取 ThinkingSDK 的 distinctId。你可以在此基础上扩展更多节点，或接入自定义监控与埋点方案。
 
 ## 快速开始
 

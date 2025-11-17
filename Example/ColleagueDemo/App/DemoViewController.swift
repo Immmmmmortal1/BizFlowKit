@@ -35,15 +35,6 @@ final class DemoViewController: UIViewController {
         return button
     }()
 
-    private lazy var pipelineButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Run Onboarding Pipeline", for: .normal)
-        button.configuration = .borderedProminent()
-        button.addTarget(self, action: #selector(runPipelineTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.dataSource = self
@@ -70,7 +61,6 @@ final class DemoViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(initializeButton)
         view.addSubview(initializeThinkingButton)
-        view.addSubview(pipelineButton)
         view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
@@ -84,10 +74,7 @@ final class DemoViewController: UIViewController {
             initializeThinkingButton.topAnchor.constraint(equalTo: initializeButton.bottomAnchor, constant: 16),
             initializeThinkingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
-            pipelineButton.topAnchor.constraint(equalTo: initializeThinkingButton.bottomAnchor, constant: 16),
-            pipelineButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            tableView.topAnchor.constraint(equalTo: pipelineButton.bottomAnchor, constant: 24),
+            tableView.topAnchor.constraint(equalTo: initializeThinkingButton.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -107,12 +94,6 @@ final class DemoViewController: UIViewController {
         )
 
         appendLog("UMSDK initialized. Check console for BizFlowKit logs.")
-    }
-
-    @objc private func runPipelineTapped() {
-        Task {
-            await runOnboarding()
-        }
     }
 
     @objc private func initializeThinkingSDKTapped() {
@@ -135,22 +116,6 @@ final class DemoViewController: UIViewController {
     @MainActor
     private func clearLogs() {
         logs = []
-    }
-
-    @MainActor
-    private func runOnboarding() async {
-        clearLogs()
-
-        var context = OnboardingContext()
-        let pipeline = OnboardingPipeline().makePipeline()
-
-        do {
-            try await pipeline.run(with: &context)
-            appendLog("Status: \(String(describing: context.status))")
-            appendLog("Metadata: \(context.metadata)")
-        } catch {
-            appendLog("Error: \(error.localizedDescription)")
-        }
     }
 
     private func initializeThinkingSDKIfNeeded() {
