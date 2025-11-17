@@ -12,5 +12,6 @@
    - `Initialize ThinkingSDK`：可选埋点 SDK，一旦宿主项目也集成即可使用。
    - `Initialize Adjust`：调用新增的 Adjust 封装。
    - `Run Onboarding Pipeline`：执行业务流程并观察日志。
+   - `Thinking distinctId` 日志来自 `BizFlowKitInitializer.thinkingDistinctId()`，无需直接引用第三方 SDK。
 
 > Podfile 通过 Git tag `0.1.1` 指向刚发布的版本，如后续有新版本只需更新 tag 或使用 `~> 最新版本`。

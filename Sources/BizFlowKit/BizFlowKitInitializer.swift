@@ -356,6 +356,15 @@ extension BizFlowKitInitializer {
             TDAnalytics.track(name)
         }
     }
+
+    /// 获取当前 ThinkingSDK 的 distinctId。
+    public static func thinkingDistinctId() -> String? {
+        guard isThinkingAnalyticsConfigured else {
+            log("[ThinkingAnalytics] distinctId requested before initialization.")
+            return nil
+        }
+        return TDAnalytics.getDistinctId()
+    }
 }
 #else
 extension BizFlowKitInitializer {
@@ -374,6 +383,11 @@ extension BizFlowKitInitializer {
 
     public static func trackThinkingEvent(_ name: String, properties: [String: Any]? = nil) {
         log("[ThinkingAnalytics] Module not linked. Skip track for \(name).")
+    }
+
+    public static func thinkingDistinctId() -> String? {
+        log("[ThinkingAnalytics] Module not linked. distinctId unavailable.")
+        return nil
     }
 }
 #endif

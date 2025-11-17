@@ -1,6 +1,5 @@
 import UIKit
 import BizFlowKit
-import ThinkingSDK
 
 final class DemoViewController: UIViewController {
     private enum ThinkingSDKConfig {
@@ -171,8 +170,7 @@ final class DemoViewController: UIViewController {
             )
         )
 
-        if BizFlowKitInitializer.isThinkingAnalyticsConfigured {
-            let distinctId = TDAnalytics.getDistinctId()
+        if let distinctId = BizFlowKitInitializer.thinkingDistinctId() {
             appendLog("ThinkingSDK distinctId: \(distinctId)")
         }
     }

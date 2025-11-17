@@ -61,6 +61,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             enableLog: true,
             superProperties: ["channel": "App Store"]
         )
+
+        if let distinctId = BizFlowKitInitializer.thinkingDistinctId() {
+            print("ThinkingSDK distinctId: \(distinctId)")
+        }
         #endif
 
         #if canImport(Adjust)
