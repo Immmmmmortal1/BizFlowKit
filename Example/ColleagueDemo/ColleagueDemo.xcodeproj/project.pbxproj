@@ -15,15 +15,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0EAA17D4AD9343B28D7CFC7761C65E2D /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DemoViewController.swift; path = App/DemoViewController.swift; sourceTree = "<group>"; };
-		17573D79A7C34CCDA261136D171B9642 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = App/SceneDelegate.swift; sourceTree = "<group>"; };
+		0EAA17D4AD9343B28D7CFC7761C65E2D /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DemoViewController.swift; path = ../App/DemoViewController.swift; sourceTree = "<group>"; };
+		17573D79A7C34CCDA261136D171B9642 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ../App/SceneDelegate.swift; sourceTree = "<group>"; };
 		1CB4512DB0B4FC3A550F2E59 /* Pods-ColleagueDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColleagueDemo.debug.xcconfig"; path = "Target Support Files/Pods-ColleagueDemo/Pods-ColleagueDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		4B0E8E2A2CB66D2E00F4B755 /* ColleagueDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColleagueDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B0E8E332CB66D8B00F4B755 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4B0E8E342CB66D9F00F4B755 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4B0E8E3D2CB6713A00F4B755 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5783513438D0F78708A459FB /* Pods-ColleagueDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ColleagueDemo.release.xcconfig"; path = "Target Support Files/Pods-ColleagueDemo/Pods-ColleagueDemo.release.xcconfig"; sourceTree = "<group>"; };
-		939E5EF8876D450B8CCCA4E6794D2BD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = App/AppDelegate.swift; sourceTree = "<group>"; };
+		939E5EF8876D450B8CCCA4E6794D2BD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../App/AppDelegate.swift; sourceTree = "<group>"; };
 		CC761E11561540AEE7710814 /* Pods_ColleagueDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ColleagueDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
