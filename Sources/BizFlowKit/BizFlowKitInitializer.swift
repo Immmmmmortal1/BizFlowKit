@@ -168,6 +168,7 @@ extension BizFlowKitInitializer {
     ///   - configure: 可对 `ADJConfig` 做进一步自定义。
     ///   - attributionHandler: 获取归因信息时回调，`isFromCache` 表示是否来自本地缓存。
     ///   - adidHandler: 获取 Adjust Adid 时回调，`isFromCache` 表示是否来自本地缓存。
+    ///   - useCache: 是否启用 BizFlowKit 内建的归因与 Adid 缓存，默认 `true`。启用时，如存在历史缓存会在初始化前立即回调一次，并在实时数据到达后再次回调；关闭后不读取或写入缓存。
     public static func configureAdjust(
         appToken: String,
         environment: String = ADJEnvironmentProduction,
@@ -180,7 +181,8 @@ extension BizFlowKitInitializer {
         globalPartnerParameters: [String: String]? = nil,
         configure: AdjustConfigurator? = nil,
         attributionHandler: AdjustAttributionHandler? = nil,
-        adidHandler: AdjustAdidHandler? = nil
+        adidHandler: AdjustAdidHandler? = nil,
+        useCache: Bool = true
     ) {
         guard !isAdjustConfigured else {
             log("[Adjust] Already configured.")
@@ -220,14 +222,17 @@ extension BizFlowKitInitializer {
         configureCachedAdjustCallbacks(
             appToken: appToken,
             attributionHandler: attributionHandler,
-            adidHandler: adidHandler
+            adidHandler: adidHandler,
+            useCache: useCache
         )
 
         Adjust.initSdk(config)
 
         Adjust.attribution { attribution in
             guard let attribution else { return }
-            cache(attribution: attribution, for: appToken)
+            if useCache {
+                cache(attribution: attribution, for: appToken)
+            }
             DispatchQueue.main.async {
                 attributionHandler?(attribution, false)
             }
@@ -235,7 +240,9 @@ extension BizFlowKitInitializer {
 
         Adjust.adid { adid in
             guard let adid else { return }
-            cache(adid: adid, for: appToken)
+            if useCache {
+                cache(adid: adid, for: appToken)
+            }
             DispatchQueue.main.async {
                 adidHandler?(adid, false)
             }
@@ -287,8 +294,11 @@ extension BizFlowKitInitializer {
     static func configureCachedAdjustCallbacks(
         appToken: String,
         attributionHandler: AdjustAttributionHandler?,
-        adidHandler: AdjustAdidHandler?
+        adidHandler: AdjustAdidHandler?,
+        useCache: Bool
     ) {
+        guard useCache else { return }
+
         if let attributionHandler,
            let cached = cachedAttribution(for: appToken) {
             DispatchQueue.main.async {

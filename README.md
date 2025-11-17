@@ -78,7 +78,8 @@ BizFlowKitInitializer.configureAdjust(
     adidHandler: { adid, isCache in
         let source = isCache ? "cache" : "live"
         print("Adjust adid (\(source)): \(adid)")
-    }
+    },
+    useCache: true
 )
 
 BizFlowKitInitializer.requestTrackingAuthorization { status in

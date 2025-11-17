@@ -104,7 +104,8 @@ final class DemoViewController: UIViewController {
             adidHandler: { [weak self] adid, isCache in
                 let state = isCache ? "cache" : "live"
                 self?.appendLog("Adjust adid (\(state)): \(adid)")
-            }
+            },
+            useCache: true
         )
 
         appendLog("UMSDK initialized. Check console for BizFlowKit logs.")
