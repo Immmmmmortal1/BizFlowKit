@@ -13,4 +13,4 @@
    - `Initialize Adjust`：调用封装后的 Adjust 初始化（默认启用缓存，可按需将 `useCache` 设为 `false`），日志会显示本地缓存/实时的归因与 Adid。
    - `Thinking distinctId` 日志来自 `BizFlowKitInitializer.thinkingDistinctId()`，无需直接引用第三方 SDK。
 
-> Podfile 通过 Git tag `0.1.2` 指向刚发布的版本，如后续有新版本只需更新 tag 或使用 `~> 最新版本`。
+> Podfile 通过 Git tag `0.1.3` 指向刚发布的版本，如后续有新版本只需更新 tag 或使用 `~> 最新版本`。
