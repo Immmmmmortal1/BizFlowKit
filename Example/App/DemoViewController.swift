@@ -148,10 +148,8 @@ final class DemoViewController: UIViewController {
             try await pipeline.run(with: &context)
             appendLog("Status: \(String(describing: context.status))")
             appendLog("Metadata: \(context.metadata)")
-            trackThinkingAnalytics(event: "demo_pipeline_completed", status: context.status, metadata: context.metadata)
         } catch {
             appendLog("Error: \(error.localizedDescription)")
-            trackThinkingAnalytics(event: "demo_pipeline_failed", status: nil, metadata: ["error": error.localizedDescription])
         }
     }
 
@@ -175,23 +173,6 @@ final class DemoViewController: UIViewController {
         }
     }
 
-    private func trackThinkingAnalytics(
-        event: String,
-        status: OnboardingContext.Status?,
-        metadata: [String: String]
-    ) {
-        guard BizFlowKitInitializer.isThinkingAnalyticsConfigured else { return }
-
-        var properties: [String: Any] = metadata.reduce(into: [:]) { result, item in
-            result["meta_\(item.key)"] = item.value
-        }
-
-        if let status {
-            properties["status"] = String(describing: status)
-        }
-
-        BizFlowKitInitializer.trackThinkingEvent(event, properties: properties)
-    }
 }
 
 @MainActor
