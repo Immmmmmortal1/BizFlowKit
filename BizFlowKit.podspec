@@ -28,6 +28,13 @@ BizFlowKit 提供一个可扩展的业务流程编排框架示例，旨在帮助
   s.dependency 'Adjust/AdjustGoogleOdm'
   s.dependency 'GoogleAdsOnDeviceConversion'
 
+  s.pod_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+  }
+  s.user_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+  }
+
   s.test_spec 'Tests' do |test_spec|
     test_spec.platform = :ios, '15.0'
     test_spec.source_files = 'Tests/BizFlowKitTests/**/*.{swift}'
