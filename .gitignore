@@ -1,0 +1,12 @@
+.DS_Store
+Pods/
+DerivedData/
+xcuserdata/
+*.xcworkspace
+*.xcuserstate
+*.lock
+build/
+Example/Pods/
+ModuleCache/
+ModuleCacheSwift/
+logs/

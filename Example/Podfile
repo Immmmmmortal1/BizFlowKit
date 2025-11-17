@@ -1,0 +1,12 @@
+platform :ios, '15.0'
+
+
+project 'BizFlowKitExample.xcodeproj'
+
+target 'BizFlowKitExample' do
+  use_frameworks! :linkage => :static
+  pod 'BizFlowKit', :path => '..'
+  pod 'ThinkingSDK'
+  # 在此添加额外依赖，例如：
+  # pod 'Alamofire'
+end
