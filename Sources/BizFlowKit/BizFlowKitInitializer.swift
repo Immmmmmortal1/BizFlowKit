@@ -2,8 +2,8 @@ import Foundation
 import UMCommon
 import UMPush
 
-#if canImport(AdjustSdk)
-import AdjustSdk
+#if canImport(Adjust)
+import Adjust
 #endif
 
 #if canImport(ThinkingSDK)
@@ -141,7 +141,7 @@ public enum BizFlowKitInitializer {
     }
 }
 
-#if canImport(AdjustSdk)
+#if canImport(Adjust)
 extension BizFlowKitInitializer {
     public private(set) static var isAdjustConfigured: Bool {
         get { isAdjustConfiguredInternal }
@@ -151,17 +151,17 @@ extension BizFlowKitInitializer {
 
 extension BizFlowKitInitializer {
     public typealias AdjustConfigurator = (ADJConfig) -> Void
-    public typealias AdjustAttributionHandler = (_ attribution: ADJAttribution, _ isFromCache: Bool) -> Void
+    public typealias AdjustAttributionHandler = (_ attribution: ADJAttribution?) -> Void
 
     /// 初始化 Adjust SDK 并配置常用参数。
     /// - Parameters:
     ///   - appToken: Adjust 后台的 App Token。
     ///   - environment: 运行环境，默认为正式环境 `ADJEnvironmentProduction`。
     ///   - logLevel: 日志级别，默认 `.info`。
-    ///   - allowBackgroundTracking: 是否允许后台上报。
-    ///   - allowiAdInfoReading: 是否允许读取 iAd 信息。
-    ///   - allowAdServicesInfoReading: 是否允许读取 Apple AdServices 信息。
-    ///   - launchDeferredDeeplink: 是否自动拉起延迟深度链接。
+    ///   - enableSendingInBackground: 是否允许后台上报。
+    ///   - enableAdServices: 是否启用 Apple AdServices 信息读取。
+    ///   - enableIdfaReading: 是否允许读取 IDFA。
+    ///   - enableIdfvReading: 是否允许读取 IDFV。
     ///   - externalDeviceId: 可选的外部设备 ID。
     ///   - globalPartnerParameters: 需要注入的全局伙伴参数。
     ///   - configure: 可对 `ADJConfig` 做进一步自定义。
@@ -169,11 +169,11 @@ extension BizFlowKitInitializer {
     public static func configureAdjust(
         appToken: String,
         environment: String = ADJEnvironmentProduction,
-        logLevel: ADJLogLevel = .info,
-        allowBackgroundTracking: Bool = true,
-        allowiAdInfoReading: Bool = true,
-        allowAdServicesInfoReading: Bool = true,
-        launchDeferredDeeplink: Bool = false,
+        logLevel: ADJLogLevel = ADJLogLevelInfo,
+        enableSendingInBackground: Bool = true,
+        enableAdServices: Bool = true,
+        enableIdfaReading: Bool = true,
+        enableIdfvReading: Bool = true,
         externalDeviceId: String? = nil,
         globalPartnerParameters: [String: String]? = nil,
         configure: AdjustConfigurator? = nil,
@@ -190,10 +190,20 @@ extension BizFlowKitInitializer {
         }
 
         config.logLevel = logLevel
-        config.sendInBackground = allowBackgroundTracking
-        config.allowiAdInfoReading = allowiAdInfoReading
-        config.allowAdServicesInfoReading = allowAdServicesInfoReading
-        config.launchDeferredDeeplink = launchDeferredDeeplink
+
+        if enableSendingInBackground {
+            config.enableSendingInBackground()
+        }
+        if !enableAdServices {
+            config.disableAdServices()
+        }
+        if !enableIdfaReading {
+            config.disableIdfaReading()
+        }
+        if !enableIdfvReading {
+            config.disableIdfvReading()
+        }
+
         if let externalDeviceId {
             config.externalDeviceId = externalDeviceId
         }
@@ -207,9 +217,8 @@ extension BizFlowKitInitializer {
 
         if let attributionHandler {
             Adjust.attribution { attribution in
-                guard let attribution else { return }
                 DispatchQueue.main.async {
-                    attributionHandler(attribution, false)
+                    attributionHandler(attribution)
                 }
             }
         }
@@ -247,11 +256,11 @@ extension BizFlowKitInitializer {
         }
 
         callbackParameters?.forEach { key, value in
-            event.addCallbackParameter(value, forKey: key)
+            event.addCallbackParameter(key, value: value)
         }
 
         partnerParameters?.forEach { key, value in
-            event.addPartnerParameter(value, forKey: key)
+            event.addPartnerParameter(key, value: value)
         }
 
         Adjust.trackEvent(event)

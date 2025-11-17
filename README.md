@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         #endif
 
-        #if canImport(AdjustSdk)
+        #if canImport(Adjust)
         BizFlowKitInitializer.configureAdjust(
             appToken: "<Adjust_AppToken>",
             globalPartnerParameters: ["channel": "App Store"]
@@ -99,7 +99,7 @@ BizFlowKitInitializer.trackEvent("onboarding_complete", attributes: ["step": 3])
 BizFlowKitInitializer.trackThinkingEvent("purchase", properties: ["amount": 99.0])
 #endif
 
-#if canImport(AdjustSdk)
+#if canImport(Adjust)
 BizFlowKitInitializer.trackAdjustEvent(
     token: "<EVENT_TOKEN>",
     revenue: 9.99,
