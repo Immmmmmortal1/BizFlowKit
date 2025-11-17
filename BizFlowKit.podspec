@@ -8,10 +8,10 @@ BizFlowKit 提供一个可扩展的业务流程编排框架示例，旨在帮助
 并通过 CocoaPods 分发给移动端项目使用。你可以在此基础上扩展节点、管道和监控能力。
   DESC
 
-  s.homepage         = 'https://example.com/BizFlowKit'
+  s.homepage         = 'https://github.com/Immmmmmortal1/BizFlowKit'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Your Name' => 'you@example.com' }
-  s.source           = { :git => 'https://example.com/BizFlowKit.git', :tag => s.version.to_s }
+  s.author           = { 'Immmmmmortal1' => 'Immmmmmortal1@example.com' }
+  s.source           = { :git => 'https://github.com/Immmmmmortal1/BizFlowKit.git', :tag => s.version.to_s }
 
   s.swift_versions   = ['5.7']
   s.platform     = :ios, '15.0'
