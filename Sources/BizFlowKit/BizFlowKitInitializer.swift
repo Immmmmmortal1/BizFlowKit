@@ -151,7 +151,8 @@ extension BizFlowKitInitializer {
 
 extension BizFlowKitInitializer {
     public typealias AdjustConfigurator = (ADJConfig) -> Void
-    public typealias AdjustAttributionHandler = (_ attribution: ADJAttribution?) -> Void
+    public typealias AdjustAttributionHandler = (_ attribution: ADJAttribution, _ isFromCache: Bool) -> Void
+    public typealias AdjustAdidHandler = (_ adid: String, _ isFromCache: Bool) -> Void
 
     /// 初始化 Adjust SDK 并配置常用参数。
     /// - Parameters:
@@ -165,7 +166,8 @@ extension BizFlowKitInitializer {
     ///   - externalDeviceId: 可选的外部设备 ID。
     ///   - globalPartnerParameters: 需要注入的全局伙伴参数。
     ///   - configure: 可对 `ADJConfig` 做进一步自定义。
-    ///   - attributionHandler: 初始化完成后回调最新归因信息。
+    ///   - attributionHandler: 获取归因信息时回调，`isFromCache` 表示是否来自本地缓存。
+    ///   - adidHandler: 获取 Adjust Adid 时回调，`isFromCache` 表示是否来自本地缓存。
     public static func configureAdjust(
         appToken: String,
         environment: String = ADJEnvironmentProduction,
@@ -177,7 +179,8 @@ extension BizFlowKitInitializer {
         externalDeviceId: String? = nil,
         globalPartnerParameters: [String: String]? = nil,
         configure: AdjustConfigurator? = nil,
-        attributionHandler: AdjustAttributionHandler? = nil
+        attributionHandler: AdjustAttributionHandler? = nil,
+        adidHandler: AdjustAdidHandler? = nil
     ) {
         guard !isAdjustConfigured else {
             log("[Adjust] Already configured.")
@@ -209,17 +212,32 @@ extension BizFlowKitInitializer {
         }
 
         configure?(config)
-        Adjust.initSdk(config)
 
         globalPartnerParameters?.forEach { key, value in
             Adjust.addGlobalPartnerParameter(value, forKey: key)
         }
 
-        if let attributionHandler {
-            Adjust.attribution { attribution in
-                DispatchQueue.main.async {
-                    attributionHandler(attribution)
-                }
+        configureCachedAdjustCallbacks(
+            appToken: appToken,
+            attributionHandler: attributionHandler,
+            adidHandler: adidHandler
+        )
+
+        Adjust.initSdk(config)
+
+        Adjust.attribution { attribution in
+            guard let attribution else { return }
+            cache(attribution: attribution, for: appToken)
+            DispatchQueue.main.async {
+                attributionHandler?(attribution, false)
+            }
+        }
+
+        Adjust.adid { adid in
+            guard let adid else { return }
+            cache(adid: adid, for: appToken)
+            DispatchQueue.main.async {
+                adidHandler?(adid, false)
             }
         }
 
@@ -264,6 +282,62 @@ extension BizFlowKitInitializer {
         }
 
         Adjust.trackEvent(event)
+    }
+
+    static func configureCachedAdjustCallbacks(
+        appToken: String,
+        attributionHandler: AdjustAttributionHandler?,
+        adidHandler: AdjustAdidHandler?
+    ) {
+        if let attributionHandler,
+           let cached = cachedAttribution(for: appToken) {
+            DispatchQueue.main.async {
+                attributionHandler(cached, true)
+            }
+        }
+
+        if let adidHandler,
+           let cachedAdid = cachedAdid(for: appToken) {
+            DispatchQueue.main.async {
+                adidHandler(cachedAdid, true)
+            }
+        }
+    }
+
+    static func cache(attribution: ADJAttribution, for appToken: String) {
+        guard let rawDict = attribution.dictionary() else { return }
+        let converted = rawDict.reduce(into: [String: Any]()) { result, element in
+            if let key = element.key as? String {
+                result[key] = element.value
+            }
+        }
+        guard !converted.isEmpty else { return }
+        UserDefaults.standard.set(converted, forKey: AdjustCacheKeys.attribution(appToken))
+    }
+
+    static func cachedAttribution(for appToken: String) -> ADJAttribution? {
+        guard let dict = UserDefaults.standard.dictionary(forKey: AdjustCacheKeys.attribution(appToken)) else {
+            return nil
+        }
+        return ADJAttribution(jsonDict: dict)
+    }
+
+    static func cache(adid: String, for appToken: String) {
+        UserDefaults.standard.set(adid, forKey: AdjustCacheKeys.adid(appToken))
+    }
+
+    static func cachedAdid(for appToken: String) -> String? {
+        UserDefaults.standard.string(forKey: AdjustCacheKeys.adid(appToken))
+    }
+
+    private enum AdjustCacheKeys {
+        static func attribution(_ appToken: String) -> String {
+            "com.bizflowkit.adjust.attribution.\(appToken)"
+        }
+
+        static func adid(_ appToken: String) -> String {
+            "com.bizflowkit.adjust.adid.\(appToken)"
+        }
     }
 
 #if canImport(AppTrackingTransparency)

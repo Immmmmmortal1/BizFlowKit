@@ -67,15 +67,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         #endif
 
-        #if canImport(Adjust)
-        BizFlowKitInitializer.configureAdjust(
-            appToken: "<Adjust_AppToken>",
-            globalPartnerParameters: ["channel": "App Store"]
-        )
+#if canImport(Adjust)
+BizFlowKitInitializer.configureAdjust(
+    appToken: "<Adjust_AppToken>",
+    globalPartnerParameters: ["channel": "App Store"],
+    attributionHandler: { attribution, isCache in
+        let source = isCache ? "cache" : "live"
+        print("Adjust attribution (\(source)): campaign=\(attribution.campaign ?? "-")")
+    },
+    adidHandler: { adid, isCache in
+        let source = isCache ? "cache" : "live"
+        print("Adjust adid (\(source)): \(adid)")
+    }
+)
 
-        BizFlowKitInitializer.requestTrackingAuthorization { status in
-            print("ATT status: \(status.rawValue)")
-        }
+BizFlowKitInitializer.requestTrackingAuthorization { status in
+    print("ATT status: \(status.rawValue)")
+}
         #endif
 
         return true
@@ -121,7 +129,7 @@ BizFlowKit 默认不预置任何第三方 SDK，方便在不同业务场景下�
 
 ## 示例能力
 
-示例 App 提供 `BizFlowKitInitializer` 对友盟 SDK、Adjust 等进行统一初始化，并展示如何获取 ThinkingSDK 的 distinctId。你可以在此基础上扩展更多节点，或接入自定义监控与埋点方案。
+示例 App 提供 `BizFlowKitInitializer` 对友盟 SDK、Adjust 等进行统一初始化，并展示如何获取 Adjust 归因/Adid 以及 ThinkingSDK 的 distinctId。你可以在此基础上扩展更多节点，或接入自定义监控与埋点方案。
 
 ## 快速开始
 

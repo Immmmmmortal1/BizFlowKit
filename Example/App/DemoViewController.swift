@@ -93,6 +93,20 @@ final class DemoViewController: UIViewController {
             attributes: ["source": "DemoViewController"]
         )
 
+        BizFlowKitInitializer.configureAdjust(
+            appToken: "adjust-demo-app-token",
+            globalPartnerParameters: ["channel": "App Store"],
+            attributionHandler: { [weak self] attribution, isCache in
+                let state = isCache ? "cache" : "live"
+                let campaign = attribution.campaign ?? "-"
+                self?.appendLog("Adjust attribution (\(state)) campaign: \(campaign)")
+            },
+            adidHandler: { [weak self] adid, isCache in
+                let state = isCache ? "cache" : "live"
+                self?.appendLog("Adjust adid (\(state)): \(adid)")
+            }
+        )
+
         appendLog("UMSDK initialized. Check console for BizFlowKit logs.")
     }
 
