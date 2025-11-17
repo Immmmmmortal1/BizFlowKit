@@ -15,6 +15,7 @@ BizFlowKit 提供一个可扩展的业务流程编排框架示例，旨在帮助
 
   s.swift_versions   = ['5.7']
   s.platform     = :ios, '15.0'
+  s.static_framework = true
 
   s.source_files = 'Sources/BizFlowKit/**/*.{swift}'
 
